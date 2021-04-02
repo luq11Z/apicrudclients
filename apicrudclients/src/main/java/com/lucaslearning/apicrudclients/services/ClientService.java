@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.lucaslearning.apicrudclients.dto.ClientDTO;
 import com.lucaslearning.apicrudclients.entities.Client;
 import com.lucaslearning.apicrudclients.repositories.ClientRepository;
+import com.lucaslearning.apicrudclients.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class ClientService {
@@ -25,8 +26,25 @@ public class ClientService {
 	}
 	
 	@Transactional(readOnly = true)
-	public Client findById(Long id) {
+	public ClientDTO findById(Long id) {
 		Optional<Client> obj = repository.findById(id);
-		return obj.get();
+		Client entity = obj.orElseThrow(() -> new ObjectNotFoundException("Object not found"));
+		return new ClientDTO(entity);
+	}
+	
+	@Transactional
+	public ClientDTO insert(ClientDTO dto) {
+		Client entity = new Client();
+		copyEntityToDto(entity, dto);
+		repository.save(entity);
+		return new ClientDTO(entity);
+	}
+
+	private void copyEntityToDto(Client entity, ClientDTO dto) {
+		entity.setName(dto.getName());
+		entity.setChildren(dto.getChildren());
+		entity.setCpf(dto.getCpf());
+		entity.setIncome(dto.getIncome());
+		entity.setBirthDate(dto.getBirthDate());
 	}
 }

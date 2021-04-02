@@ -5,32 +5,35 @@ import java.time.Instant;
 
 import com.lucaslearning.apicrudclients.entities.Client;
 
-public class ClientDTO implements Serializable{
-	
+public class ClientDTO implements Serializable {
+
 	private static final long serialVersionUID = 1L;
-	
+
 	private Long id;
 	private String name;
 	private String cpf;
+	private Integer children;
 	private Double income;
 	private Instant birthDate;
-	
+
 	public ClientDTO() {
-		
+
 	}
 
-	public ClientDTO(Long id, String name, String cpf, Double income, Instant birthDate) {
+	public ClientDTO(Long id, String name, String cpf, Integer children, Double income, Instant birthDate) {
 		this.id = id;
 		this.name = name;
 		this.cpf = cpf;
+		this.setChildren(children);
 		this.income = income;
 		this.birthDate = birthDate;
 	}
-	
+
 	public ClientDTO(Client entity) {
 		this.id = entity.getId();
 		this.name = entity.getName();
 		this.cpf = entity.getCpf();
+		this.setChildren(entity.getChildren());
 		this.income = entity.getIncome();
 		this.birthDate = entity.getBirthDate();
 	}
@@ -57,6 +60,14 @@ public class ClientDTO implements Serializable{
 
 	public void setCpf(String cpf) {
 		this.cpf = cpf;
+	}
+
+	public Integer getChildren() {
+		return children;
+	}
+
+	public void setChildren(Integer children) {
+		this.children = children;
 	}
 
 	public Double getIncome() {
